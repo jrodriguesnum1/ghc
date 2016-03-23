@@ -998,11 +998,16 @@ selector_loop:
           }
 
       case IND:
-      case COUNTING_IND:
       case IND_STATIC:
           // Again, we might need to untag a constructor.
           selectee = UNTAG_CLOSURE( ((StgInd *)selectee)->indirectee );
           goto selector_loop;
+
+      case COUNTING_IND:
+          // do not short cut a COUNTING_IND, as we would miss a the count
+	  // Can we simply tick the counter here? Not really: If this selector
+	  // thunk is not going to be used, we counted more than we wanted!
+          goto bale_out;
 
       case BLACKHOLE:
       {
