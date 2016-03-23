@@ -234,7 +234,10 @@ mkLFReEntrant _ _ [] _
   = pprPanic "mkLFReEntrant" empty
 mkLFReEntrant top fvs args arg_descr
   = LFReEntrant top os_info (length args) (null fvs) arg_descr
-  where os_info = idOneShotInfo (head args)
+  where
+    state_hack_hack = isStateHackType (idType (head args))
+    os_info | state_hack_hack = noOneShotInfo
+            | otherwise       = idOneShotInfo (head args)
 
 -------------
 mkLFThunk :: Type -> TopLevelFlag -> [Id] -> UpdateFlag -> LambdaFormInfo
