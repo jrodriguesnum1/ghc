@@ -48,6 +48,7 @@ _darcs/
 # sub-repositories
 
 /ghc-tarballs/
+libraries
 
 # -----------------------------------------------------------------------------
 # Cabal dist directories
